@@ -17,24 +17,17 @@ func _ready():
 func _process(delta):
     var dir = Vector2()
 
-    if Input.is_action_pressed("ui_right"):
+    if Input.is_action_just_pressed("ui_right"):
         dir.x = 1
-    elif Input.is_action_pressed("ui_left"):
+    elif Input.is_action_just_pressed("ui_left"):
         dir.x = -1
-    elif Input.is_action_pressed("ui_up"):
+    elif Input.is_action_just_pressed("ui_up"):
         dir.y = -1
-    elif Input.is_action_pressed("ui_down"):
+    elif Input.is_action_just_pressed("ui_down"):
         dir.y = 1
 
     if position == target and dir != Vector2():
         start = position
-#        var check_target = position + dir * 16
-#        # There may be a better way to do this
-#        var map = get_node("/root/Mansion/MansionMap")
-#        var cellv = map.world_to_map(check_target)
-#        print(cellv)
-#        if map.get_cellv(cellv) == -1:
-#            target = check_target
         try_target = position + dir * GRID_SIZE
         print(try_target)
         dt = 0
