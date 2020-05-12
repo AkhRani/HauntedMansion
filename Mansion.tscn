@@ -6,6 +6,10 @@
 
 [node name="Mansion" type="Node2D"]
 script = ExtResource( 1 )
+__meta__ = {
+"_edit_horizontal_guides_": [ 480.0 ],
+"_edit_vertical_guides_": [ 640.0 ]
+}
 
 [node name="MansionMap" type="TileMap" parent="."]
 tile_set = ExtResource( 2 )

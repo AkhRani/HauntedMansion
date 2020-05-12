@@ -25,7 +25,7 @@ func _process(delta):
                 dir.y = -1
             3:
                 dir.y = 1
-    
+
         start = position
         var check_target = position + dir * 16
         # There may be a better way to do this
@@ -39,4 +39,4 @@ func _process(delta):
         if dt > 1:
             dt = 1
         position = start.linear_interpolate(target, dt)
-    
+
