@@ -1,6 +1,7 @@
 extends Node2D
 
 onready var score = find_node("Score")
+export var difficulty: int
 
 # Called when the node enters the scene tree for the first time.
 func _ready():

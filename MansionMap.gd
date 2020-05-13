@@ -51,10 +51,10 @@ func _ready():
     player.speed = 8
     add_child(player)
 
-    place_items(CAT_TILE, 3)
-    place_items(GHOST_TILE, 4)
-    place_items(BAT_TILE, 6)
-    place_demons(3)
+    place_items(CAT_TILE, 10)
+    place_items(GHOST_TILE, 3*global.difficulty)
+    place_items(BAT_TILE, 3*global.difficulty)
+    place_demons(2*global.difficulty)
     pass
 
 func drop_cat(target_cell, cost):
