@@ -1,9 +1,5 @@
 extends Node2D
 
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
-
 # Called when the node enters the scene tree for the first time.
 func _ready():
     $Title.text = "Welcome"
@@ -16,6 +12,10 @@ func _ready():
     pass # Replace with function body.
 
 func _on_Button_pressed():
+    $Title.text = "Save the cats!"
+    var anim = $AnimationPlayer
+    anim.play("Fade")
+    yield(anim, "animation_finished")
     get_tree().change_scene("res://Mansion.tscn")
 
 func _on_HSlider_value_changed(value: float):

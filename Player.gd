@@ -17,19 +17,18 @@ func _ready():
 func _process(delta):
     var dir = Vector2()
 
-    if Input.is_action_just_pressed("ui_right"):
+    if Input.is_action_pressed("ui_right"):
         dir.x = 1
-    elif Input.is_action_just_pressed("ui_left"):
+    elif Input.is_action_pressed("ui_left"):
         dir.x = -1
-    elif Input.is_action_just_pressed("ui_up"):
+    elif Input.is_action_pressed("ui_up"):
         dir.y = -1
-    elif Input.is_action_just_pressed("ui_down"):
+    elif Input.is_action_pressed("ui_down"):
         dir.y = 1
 
     if position == target and dir != Vector2():
         start = position
         try_target = position + dir * GRID_SIZE
-        print(try_target)
         dt = 0
     elif position != target:
         dt += delta * speed
