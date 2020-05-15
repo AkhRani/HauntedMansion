@@ -1,9 +1,41 @@
 extends TileMap
 
+# constants and enums
+enum TILE {
+    TERRAIN
+    CAT
+    GHOST
+    BAT
+    }
+
+# sub-tile enum for TERRAIN_TILE
+enum TERRAIN {
+    WALL,
+    ROOF_LEFT,
+    ROOF_RIGHT,
+    SKY,
+    UP,
+    RIGHT,
+    LEFT,
+    DOWN,
+    START
+    }
+
+enum STATE {
+    GENERATE,
+    PLAY
+    }
+
+const BOTTOM_ROW=21
+const SCORE_PER_CAT=10
+const CAT_COUNT=10
+
 # member variables
 var rng = RandomNumberGenerator.new()
+var state : int = STATE.GENERATE
 var score: int = 0
 var cats_saved: int = 0
+var gen_timer
 
 var playerScene = preload("res://Player.tscn")
 var player
@@ -15,13 +47,6 @@ var catScene = preload("res://CatSprite.tscn")
 
 var holding_cat : bool = false
 
-const TERRAIN_TILE=0
-const CAT_TILE=1
-const GHOST_TILE=2
-const BAT_TILE=3
-const BOTTOM_ROW=21
-const SCORE_PER_CAT=10
-const CAT_COUNT=10
 
 func get_empty_cell():
     while true:
@@ -48,8 +73,7 @@ func place_demons(count):
         demons.append(demon)
         add_child(demon)
 
-# Called when the node enters the scene tree for the first time.
-func _ready():
+func place_all_items():
     player = playerScene.instance()
     player.position = cell_to_sprite(Vector2(21, 21))
     player.target = player.position
@@ -57,11 +81,23 @@ func _ready():
     player.speed = 8
     add_child(player)
 
-    place_items(CAT_TILE, CAT_COUNT)
-    place_items(GHOST_TILE, 3*global.difficulty)
-    place_items(BAT_TILE, 3*global.difficulty)
+    place_items(TILE.CAT, CAT_COUNT)
+    place_items(TILE.GHOST, 3*global.difficulty)
+    place_items(TILE.BAT, 3*global.difficulty)
     place_demons(2*global.difficulty)
-    pass
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+    gen_timer = Timer.new()
+    gen_timer.connect("timeout", self, "do_generate")
+    add_child(gen_timer)
+    gen_timer.start(1)
+
+func do_generate():
+    gen_timer.stop()
+    remove_child(gen_timer)
+    place_all_items()
+    state = STATE.PLAY
 
 func drop_cat(target_cell, cost):
     score -= cost
@@ -72,7 +108,7 @@ func drop_cat(target_cell, cost):
         cat.free()
         holding_cat = false
         score -= cost
-        place_items(CAT_TILE, 1)
+        place_items(TILE.CAT, 1)
 
 func save_cat():
     score += SCORE_PER_CAT
@@ -88,6 +124,8 @@ func save_cat():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
+    if state !=  STATE.PLAY:
+        return
     # Check for collisions (most of the game logic is here)
     for d in demons:
         if d.target == player.target:
@@ -103,10 +141,10 @@ func _process(_delta):
             if holding_cat and target_cell.y == BOTTOM_ROW:
                 save_cat()
 
-        TERRAIN_TILE:
+        TILE.TERRAIN:
             player.try_target = player.target
 
-        CAT_TILE:
+        TILE.CAT:
             if holding_cat:
                 player.try_target = player.target
             else:
@@ -120,10 +158,10 @@ func _process(_delta):
         # Note:  Original subtracted 2 * <difficulty>^2, double that if you were carrying a cat,
         # but wouldn't let the score go below zero, so you could game it by clearing ghosts and
         # bats before picking up any cats.
-        GHOST_TILE:
+        TILE.GHOST:
             drop_cat(target_cell, 10)
 
-        BAT_TILE:
+        TILE.BAT:
             drop_cat(target_cell, 5)
 
     player.target = player.try_target
