@@ -1,8 +1,10 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Mansion.gd" type="Script" id=1]
 [ext_resource path="res://mansion_tileset.tres" type="TileSet" id=2]
 [ext_resource path="res://MansionMap.gd" type="Script" id=3]
+[ext_resource path="res://Rise02.ogg" type="AudioStream" id=4]
+[ext_resource path="res://cleric path.ogg" type="AudioStream" id=5]
 
 [node name="Mansion" type="Node2D"]
 script = ExtResource( 1 )
@@ -49,3 +51,10 @@ margin_right = 271.0
 margin_bottom = 28.0
 rect_min_size = Vector2( 200, 16 )
 size_flags_vertical = 4
+
+[node name="SoundPlayer" type="AudioStreamPlayer" parent="MansionMap"]
+stream = ExtResource( 4 )
+
+[node name="MusicPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 5 )
+autoplay = true

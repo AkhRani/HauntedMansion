@@ -56,6 +56,8 @@ var demons = []
 
 var catScene = preload("res://CatSprite.tscn")
 
+# var pickupSound = preload("res://Rise02.ogg")
+
 var holding_cat : bool = false
 
 func get_empty_cell():
@@ -136,7 +138,17 @@ func do_generate():
     place_all_items()
     state = STATE.PLAY
 
+func pick_up_cat(target_cell):
+    $SoundPlayer.play()
+    holding_cat = true
+    var cat = catScene.instance()
+    cat.position.x = -8
+    cat.position.y = -16
+    player.add_child(cat)
+    set_cellv(target_cell, -1)
+
 func drop_cat(target_cell, cost):
+    $SoundPlayer.play()
     score -= cost
     set_cellv(target_cell, -1)
     if holding_cat:
@@ -148,6 +160,7 @@ func drop_cat(target_cell, cost):
         place_items(TILE.CAT, 1)
 
 func save_cat():
+    $SoundPlayer.play()
     score += SCORE_PER_CAT
     holding_cat = false
     var cat = player.get_child(1)
@@ -170,7 +183,7 @@ func _ready():
     gen_timer = Timer.new()
     gen_timer.connect("timeout", self, "do_generate")
     add_child(gen_timer)
-    gen_timer.start(.05)
+    gen_timer.start(.01) # (.05)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
@@ -198,12 +211,7 @@ func _process(_delta):
             if holding_cat:
                 player.try_target = player.target
             else:
-                holding_cat = true
-                var cat = catScene.instance()
-                cat.position.x = -8
-                cat.position.y = -16
-                player.add_child(cat)
-                set_cellv(target_cell, -1)
+                pick_up_cat(target_cell)
 
         # Note:  Original subtracted 2 * <difficulty>^2, double that if you were carrying a cat,
         # but wouldn't let the score go below zero, so you could game it by clearing ghosts and
