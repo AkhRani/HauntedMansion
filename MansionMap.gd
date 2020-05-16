@@ -30,12 +30,23 @@ const BOTTOM_ROW=21
 const SCORE_PER_CAT=10
 const CAT_COUNT=10
 
+const TERRAIN_DIR_START = TERRAIN.UP
+
+const GEN_DIR = [
+    Vector2(0,-2),    # Starting with TERRAIN.UP
+    Vector2(2, 0),
+    Vector2(-2, 0),
+    Vector2(0, 2),
+    Vector2(0, 0)
+    ]
+
 # member variables
 var rng = RandomNumberGenerator.new()
 var state : int = STATE.GENERATE
 var score: int = 0
 var cats_saved: int = 0
 var gen_timer
+var gen_pos: Vector2
 
 var playerScene = preload("res://Player.tscn")
 var player
@@ -46,7 +57,6 @@ var demons = []
 var catScene = preload("res://CatSprite.tscn")
 
 var holding_cat : bool = false
-
 
 func get_empty_cell():
     while true:
@@ -86,14 +96,41 @@ func place_all_items():
     place_items(TILE.BAT, 3*global.difficulty)
     place_demons(2*global.difficulty)
 
-# Called when the node enters the scene tree for the first time.
-func _ready():
-    gen_timer = Timer.new()
-    gen_timer.connect("timeout", self, "do_generate")
-    add_child(gen_timer)
-    gen_timer.start(1)
+func gen_cell(dir, id):
+    set_cellv(gen_pos + dir/2, -1)
+    gen_pos += dir
+    set_cell(gen_pos.x, gen_pos.y, TILE.TERRAIN, false, false, false, Vector2(id, 0))
 
 func do_generate():
+    # this is somewhat more elegant and sublty different in the original BASIC
+    var i = rng.randi_range(0, 3)
+    for _x in range(4):
+        var dir = GEN_DIR[i]
+        var try = gen_pos + dir
+        if get_cellv(try) == TILE.TERRAIN and get_cell_autotile_coord(try.x, try.y) == Vector2(TERRAIN.WALL, 0):
+            gen_cell(dir, TERRAIN_DIR_START+i)
+            return
+        i = (i+1) % 4
+    # back up if possible
+    var from = get_cell_autotile_coord(gen_pos.x, gen_pos.y)
+    set_cellv(gen_pos, -1)
+    if from.x < TERRAIN.START:
+        gen_pos -= GEN_DIR[from.x - TERRAIN_DIR_START]
+        return
+
+    # complete
+    for y in range(5, 21):
+        set_cell(17, y, -1)
+        set_cell(23, y, -1)
+    for y in range(10, 21):
+        set_cell(13, y, -1)
+        set_cell(27, y, -1)
+    for x in range(7, 33):
+        set_cell(x, 21, -1)
+        set_cell(x, 17, -1)
+    for x in range(12, 30):
+        set_cell(x, 11, -1)
+
     gen_timer.stop()
     remove_child(gen_timer)
     place_all_items()
@@ -121,6 +158,19 @@ func save_cat():
     find_node("SavedCats").add_child(cat)
     if CAT_COUNT == cats_saved:
         get_tree().change_scene("res://VictoryScreen.tscn")
+
+# Overrides
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+    # Kick off maze generation
+    rng.randomize()
+    set_cell(7, 21, TILE.TERRAIN, false, false, false, Vector2(TERRAIN.START, 0))
+    gen_pos = Vector2(7, 21)
+    gen_timer = Timer.new()
+    gen_timer.connect("timeout", self, "do_generate")
+    add_child(gen_timer)
+    gen_timer.start(.05)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
