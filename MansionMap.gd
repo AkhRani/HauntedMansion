@@ -40,6 +40,9 @@ const GEN_DIR = [
     Vector2(0, 0)
     ]
 
+# signals
+signal cat_saved
+
 # member variables
 var rng = RandomNumberGenerator.new()
 var state : int = STATE.GENERATE
@@ -82,6 +85,7 @@ func place_demons(count):
         # Even it if happens, it doesn't matter since they will move
         var demon = demonScene.instance()
         demon.position = cell_to_sprite(cell)
+        demon.try_target = demon.position
         demons.append(demon)
         add_child(demon)
 
@@ -90,7 +94,7 @@ func place_all_items():
     player.position = cell_to_sprite(Vector2(21, 21))
     player.target = player.position
     player.try_target = player.position
-    player.speed = 8
+    player.speed = 6
     add_child(player)
 
     place_items(TILE.CAT, CAT_COUNT)
@@ -120,7 +124,7 @@ func do_generate():
         gen_pos -= GEN_DIR[from.x - TERRAIN_DIR_START]
         return
 
-    # complete
+    # Clear vertical and horizontal strips to provide multiple paths
     for y in range(5, 21):
         set_cell(17, y, -1)
         set_cell(23, y, -1)
@@ -163,14 +167,10 @@ func save_cat():
     $SoundPlayer.play()
     score += SCORE_PER_CAT
     holding_cat = false
-    var cat = player.get_child(1)
+    var cat = player.get_child(player.get_child_count()-1)
     player.remove_child(cat)
-    cat.position.y = 0
-    cat.position.x = cats_saved * cat.texture.get_height()
-    cats_saved += 1
-    find_node("SavedCats").add_child(cat)
-    if CAT_COUNT == cats_saved:
-        get_tree().change_scene("res://VictoryScreen.tscn")
+    cat.queue_free()
+    emit_signal("cat_saved")
 
 # Overrides
 
@@ -185,15 +185,30 @@ func _ready():
     add_child(gen_timer)
     gen_timer.start(.01) # (.05)
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(_delta):
-    if state !=  STATE.PLAY:
-        return
-    # Check for collisions (most of the game logic is here)
-    for d in demons:
-        if d.target == player.target:
-            get_tree().change_scene("res://DeathScreen.tscn")
 
+func move_demons():
+    # Only one demon can move at a time
+    for d in demons:
+        if d.position != d.target:
+            if d.target == player.target:
+                get_tree().change_scene("res://DeathScreen.tscn")
+            return
+
+    # No demons are currently moving
+    for _x in range(demons.size()):
+        # pick a demon, any demon.  Might hit the same
+        var d : DemonScene = demons[rng.randi_range(0, demons.size()-1)]
+        if d.try_target == d.target:
+            # must have already checked this one
+            continue
+        var target_cell = world_to_map(d.try_target)
+        if get_cellv(target_cell) == -1:
+            d.target = d.try_target
+            break
+        # demon will pick a new try_target on the next "_process"
+        d.try_target = d.target
+
+func move_player():
     if player.try_target == player.target:
         # No movement to try
         return
@@ -223,3 +238,12 @@ func _process(_delta):
             drop_cat(target_cell, 5)
 
     player.target = player.try_target
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(_delta):
+    if state !=  STATE.PLAY:
+        return
+
+    move_demons()
+    move_player()
+

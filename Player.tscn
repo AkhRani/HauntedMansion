@@ -11,3 +11,7 @@ position = Vector2( -0.184029, 0 )
 texture = ExtResource( 2 )
 hframes = 5
 region_rect = Rect2( 0, 0, 16, 16 )
+
+[node name="Camera2D" type="Camera2D" parent="."]
+current = true
+zoom = Vector2( 0.2, 0.2 )
