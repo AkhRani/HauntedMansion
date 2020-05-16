@@ -22,7 +22,7 @@ _global_script_class_icons={
 
 config/name="Haunted Mansion"
 run/main_scene="res://TitleScreen.tscn"
-config/icon="res://icon.png"
+config/icon="res://Graphics/icon.png"
 
 [autoload]
 

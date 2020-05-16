@@ -1,16 +1,10 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://TitleScreen.gd" type="Script" id=1]
-[ext_resource path="res://GismondaPlain001001-8eYJ.ttf" type="DynamicFontData" id=2]
-[ext_resource path="res://gismondaFont.tres" type="DynamicFont" id=3]
+[ext_resource path="res://Graphics/gismondaFont_40.tres" type="DynamicFont" id=2]
+[ext_resource path="res://Graphics/gismondaFont_16.tres" type="DynamicFont" id=3]
 
-[sub_resource type="DynamicFont" id=1]
-size = 43
-use_filter = true
-extra_spacing_top = 30
-font_data = ExtResource( 2 )
-
-[sub_resource type="Animation" id=2]
+[sub_resource type="Animation" id=1]
 resource_name = "Fade"
 length = 2.2
 tracks/0/type = "value"
@@ -26,7 +20,7 @@ tracks/0/keys = {
 "values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 1 ), Color( 0, 0, 0, 1 ) ]
 }
 
-[sub_resource type="Animation" id=3]
+[sub_resource type="Animation" id=2]
 resource_name = "Fade Red"
 length = 2.0
 tracks/0/type = "value"
@@ -53,7 +47,7 @@ __meta__ = {
 margin_top = 176.0
 margin_right = 640.0
 margin_bottom = 224.0
-custom_fonts/font = SubResource( 1 )
+custom_fonts/font = ExtResource( 2 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "to the Haunted Mansion"
 align = 1
@@ -67,8 +61,8 @@ custom_fonts/font = ExtResource( 3 )
 text = "Enter"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-anims/Fade = SubResource( 2 )
-"anims/Fade Red" = SubResource( 3 )
+anims/Fade = SubResource( 1 )
+"anims/Fade Red" = SubResource( 2 )
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 margin_left = 237.0
@@ -92,6 +86,7 @@ rect_min_size = Vector2( 100, 0 )
 min_value = 1.0
 max_value = 6.0
 value = 1.0
+ticks_on_borders = true
 
 [node name="Difficulty" type="Label" parent="HBoxContainer"]
 margin_left = 170.0

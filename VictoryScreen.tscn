@@ -1,14 +1,8 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://VictoryScreen.gd" type="Script" id=1]
-[ext_resource path="res://GismondaPlain001001-8eYJ.ttf" type="DynamicFontData" id=2]
-[ext_resource path="res://gismondaFont.tres" type="DynamicFont" id=3]
-
-[sub_resource type="DynamicFont" id=1]
-size = 42
-use_filter = true
-extra_spacing_top = 30
-font_data = ExtResource( 2 )
+[ext_resource path="res://Graphics/gismondaFont_40.tres" type="DynamicFont" id=2]
+[ext_resource path="res://Graphics/gismondaFont_16.tres" type="DynamicFont" id=3]
 
 [node name="VictoryScreen" type="Node2D"]
 script = ExtResource( 1 )
@@ -17,14 +11,6 @@ __meta__ = {
 "_edit_vertical_guides_": [ 640.0 ]
 }
 
-[node name="Title" type="Label" parent="."]
-margin_top = 96.0
-margin_right = 640.0
-margin_bottom = 144.0
-custom_fonts/font = SubResource( 1 )
-text = "You Won!  All the cats are safe!"
-align = 1
-
 [node name="ScrollContainer" type="ScrollContainer" parent="."]
 margin_top = 144.0
 margin_right = 640.0
@@ -32,9 +18,9 @@ margin_bottom = 320.0
 scroll_horizontal_enabled = false
 
 [node name="Credits" type="Label" parent="ScrollContainer"]
-margin_right = 621.0
+margin_right = 591.0
 margin_bottom = 1115.0
-custom_fonts/font = SubResource( 1 )
+custom_fonts/font = ExtResource( 2 )
 text = "Credits:
 
 Music:  Sacred Battle by Tausdei
