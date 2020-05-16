@@ -59,6 +59,10 @@ var demons = []
 
 var catScene = preload("res://CatSprite.tscn")
 
+# it's probably better to have one player play multiple sounds, but this is easy
+onready var up_sound = $SoundPlayer
+onready var down_sound = $DownPlayer
+
 # var pickupSound = preload("res://Rise02.ogg")
 
 var holding_cat : bool = false
@@ -143,7 +147,7 @@ func do_generate():
     state = STATE.PLAY
 
 func pick_up_cat(target_cell):
-    $SoundPlayer.play()
+    up_sound.play()
     holding_cat = true
     var cat = catScene.instance()
     cat.position.x = -8
@@ -152,7 +156,7 @@ func pick_up_cat(target_cell):
     set_cellv(target_cell, -1)
 
 func drop_cat(target_cell, cost):
-    $SoundPlayer.play()
+    down_sound.play()
     score -= cost
     set_cellv(target_cell, -1)
     if holding_cat:
@@ -164,7 +168,7 @@ func drop_cat(target_cell, cost):
         place_items(TILE.CAT, 1)
 
 func save_cat():
-    $SoundPlayer.play()
+    up_sound.play()
     score += SCORE_PER_CAT
     holding_cat = false
     var cat = player.get_child(player.get_child_count()-1)
@@ -188,11 +192,14 @@ func _ready():
 
 func move_demons():
     # Only one demon can move at a time
+    var moving = false
     for d in demons:
         if d.position != d.target:
-            if d.target == player.target:
-                get_tree().change_scene("res://DeathScreen.tscn")
-            return
+            moving = true
+        if d.target == player.target:
+            get_tree().change_scene("res://DeathScreen.tscn")
+    if moving:
+        return
 
     # No demons are currently moving
     for _x in range(demons.size()):
