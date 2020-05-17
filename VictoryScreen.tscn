@@ -11,6 +11,14 @@ __meta__ = {
 "_edit_vertical_guides_": [ 640.0 ]
 }
 
+[node name="Victory" type="Label" parent="."]
+margin_top = 64.0
+margin_right = 640.0
+margin_bottom = 128.0
+custom_fonts/font = ExtResource( 2 )
+text = "All the cats are safe!"
+align = 1
+
 [node name="ScrollContainer" type="ScrollContainer" parent="."]
 margin_top = 144.0
 margin_right = 640.0
@@ -78,6 +86,7 @@ rect_min_size = Vector2( 100, 0 )
 min_value = 1.0
 max_value = 6.0
 value = 1.0
+ticks_on_borders = true
 
 [node name="Difficulty" type="Label" parent="HBoxContainer"]
 margin_left = 170.0
