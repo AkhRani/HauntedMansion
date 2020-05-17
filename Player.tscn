@@ -3,7 +3,6 @@
 [ext_resource path="res://Player.gd" type="Script" id=1]
 [ext_resource path="res://Graphics/MansionSprites.png" type="Texture" id=2]
 
-
 [node name="Player" type="Node2D"]
 script = ExtResource( 1 )
 
@@ -15,4 +14,4 @@ region_rect = Rect2( 0, 0, 16, 16 )
 
 [node name="Camera2D" type="Camera2D" parent="."]
 current = true
-zoom = Vector2( 0.2, 0.2 )
+zoom = Vector2( 0.5, 0.5 )

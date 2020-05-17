@@ -46,7 +46,6 @@ signal cat_saved
 # member variables
 var rng = RandomNumberGenerator.new()
 var state : int = STATE.GENERATE
-var score: int = 0
 var cats_saved: int = 0
 var gen_timer
 var gen_pos: Vector2
@@ -157,19 +156,19 @@ func pick_up_cat(target_cell):
 
 func drop_cat(target_cell, cost):
     down_sound.play()
-    score -= cost
+    global.score -= cost
     set_cellv(target_cell, -1)
     if holding_cat:
-        var cat = player.get_child(1)
+        var cat = player.get_child(player.get_child_count()-1)
         player.remove_child(cat)
-        cat.free()
+        cat.queue_free()
         holding_cat = false
-        score -= cost
+        global.score -= cost
         place_items(TILE.CAT, 1)
 
 func save_cat():
     up_sound.play()
-    score += SCORE_PER_CAT
+    global.score += SCORE_PER_CAT
     holding_cat = false
     var cat = player.get_child(player.get_child_count()-1)
     player.remove_child(cat)
@@ -250,7 +249,5 @@ func move_player():
 func _process(_delta):
     if state !=  STATE.PLAY:
         return
-
     move_demons()
     move_player()
-

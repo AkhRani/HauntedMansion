@@ -29,22 +29,40 @@ custom_fonts/font = ExtResource( 3 )
 text = "Try Again"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
-margin_left = 237.0
+margin_left = 192.0
 margin_top = 272.0
-margin_right = 429.0
+margin_right = 496.0
 margin_bottom = 288.0
 
-[node name="Label" type="Label" parent="HBoxContainer"]
+[node name="ScoreLabel" type="Label" parent="HBoxContainer"]
 margin_top = 1.0
-margin_right = 62.0
+margin_right = 76.0
+margin_bottom = 15.0
+custom_fonts/font = ExtResource( 3 )
+text = "Final Score"
+valign = 1
+
+[node name="Score" type="Label" parent="HBoxContainer"]
+margin_left = 80.0
+margin_top = 1.0
+margin_right = 113.0
+margin_bottom = 15.0
+custom_fonts/font = ExtResource( 3 )
+text = "000"
+valign = 1
+
+[node name="DifficultyLabel" type="Label" parent="HBoxContainer"]
+margin_left = 117.0
+margin_top = 1.0
+margin_right = 179.0
 margin_bottom = 15.0
 custom_fonts/font = ExtResource( 3 )
 text = "Difficulty"
 valign = 1
 
 [node name="HSlider" type="HSlider" parent="HBoxContainer"]
-margin_left = 66.0
-margin_right = 166.0
+margin_left = 183.0
+margin_right = 283.0
 margin_bottom = 16.0
 rect_min_size = Vector2( 100, 0 )
 min_value = 1.0
@@ -53,9 +71,9 @@ value = 1.0
 ticks_on_borders = true
 
 [node name="Difficulty" type="Label" parent="HBoxContainer"]
-margin_left = 170.0
+margin_left = 287.0
 margin_top = 1.0
-margin_right = 173.0
+margin_right = 290.0
 margin_bottom = 15.0
 custom_fonts/font = ExtResource( 3 )
 text = "1"
