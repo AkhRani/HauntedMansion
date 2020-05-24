@@ -78,23 +78,20 @@ func place_items(id, count):
         var cell = get_empty_cell()
         set_cell(cell.x, cell.y, id)
 
-func cell_to_sprite(cell):
-    return map_to_world(cell) + Vector2(8,8)
-
 func place_demons(count):
     for _i in range(count):
         var cell = get_empty_cell()
         # TODO:  Check for two demons in the same location
         # Even it if happens, it doesn't matter since they will move
         var demon = demonScene.instance()
-        demon.position = cell_to_sprite(cell)
+        demon.position = map_to_world(cell)
         demon.try_target = demon.position
         demons.append(demon)
         add_child(demon)
 
 func place_all_items():
     player = playerScene.instance()
-    player.position = cell_to_sprite(Vector2(21, 21))
+    player.position = map_to_world(Vector2(21, 21))
     player.target = player.position
     player.try_target = player.position
     player.speed = 6
@@ -149,8 +146,7 @@ func pick_up_cat(target_cell):
     up_sound.play()
     holding_cat = true
     var cat = catScene.instance()
-    cat.position.x = -8
-    cat.position.y = -16
+    cat.position.y = -8
     player.add_child(cat)
     set_cellv(target_cell, -1)
 
