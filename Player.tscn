@@ -10,8 +10,10 @@ script = ExtResource( 1 )
 position = Vector2( -0.184029, 0 )
 texture = ExtResource( 2 )
 offset = Vector2( 8, 8 )
-hframes = 5
+hframes = 6
 region_rect = Rect2( 0, 0, 16, 16 )
 
 [node name="Camera2D" type="Camera2D" parent="."]
 current = true
+smoothing_enabled = true
+smoothing_speed = 10.0

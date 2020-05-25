@@ -1,6 +1,6 @@
 extends Node2D
 
-var catScene = preload("res://CatSprite.tscn")
+var CatScene = preload("res://CatSprite.tscn")
 
 onready var mansion_map = find_node("MansionMap")
 onready var score = find_node("Score")
@@ -10,7 +10,7 @@ const CAT_COUNT = 10
 var cats_saved = 0
 
 func on_cat_saved():
-    var cat = catScene.instance()
+    var cat = CatScene.instance()
     cats_saved += 1
     cat.position.y = 0
     cat.position.x = cats_saved * cat.texture.get_height()

@@ -1,9 +1,10 @@
 extends Node2D
 
+
 # Constants
 const GRID_SIZE = 16
 const MAX_SCALE = .5
-const MIN_SCALE = .2
+const MIN_SCALE = .25
 const DELTA_SCALE = .001
 const SCREEN_CENTER = Vector2(640,480)/2
 const ZOOM_DELAY = .3
@@ -12,13 +13,16 @@ const ZOOM_DELAY = .3
 export var speed = 4
 
 # Variables
+var CatScene = preload("res://CatSprite.tscn")
+
 var target : Vector2
 var try_target : Vector2
 var start : Vector2
 var dt : float = 0
 var zoom_timer : float = 0
-var zoom_scale = .5
-var initial_pan = 0
+var zoom_scale : float = .5
+var initial_pan : float  = 0
+var holding_cat = false
 onready var camera = $Camera2D
 
 # Called when the node enters the scene tree for the first time.
@@ -48,9 +52,29 @@ func _process(delta):
         if dt > 1:
             dt = 1
         position = start.linear_interpolate(target, dt)
-    adjustCamera(delta, position != target)
+    adjust_camera(delta, position != target)
 
-func adjustCamera(delta, moving):
+func pick_up_cat():
+    if holding_cat:
+        print("ERROR: already holding cat")
+        return
+    holding_cat = true
+    var cat = CatScene.instance()
+    cat.position.y = -8
+    add_child(cat)
+    $Sprite.frame = 5
+
+func drop_cat():
+    if not holding_cat:
+        print("ERROR: not holding cat")
+        return
+    var cat = get_child(get_child_count()-1)
+    remove_child(cat)
+    cat.queue_free()
+    holding_cat = false
+    $Sprite.frame = 0
+
+func adjust_camera(delta, moving):
     if initial_pan < 2:
         initial_pan += delta
         if initial_pan > 2:
@@ -61,19 +85,20 @@ func adjustCamera(delta, moving):
             camera.position = Vector2(0,0)
         else:
             camera.position = to_local(SCREEN_CENTER).linear_interpolate(Vector2(0,0), initial_pan)
+        return
     if moving:
         if zoom_timer < ZOOM_DELAY:
             zoom_timer += delta*2
         elif zoom_scale > MIN_SCALE:
-            zoomCamera(-DELTA_SCALE)
+            zoom_camera(-DELTA_SCALE)
     else:
         # Standing still, decrease zoom (increase scale)
         if zoom_timer > -ZOOM_DELAY:
             zoom_timer -= delta
         elif zoom_scale < MAX_SCALE:
-            zoomCamera(DELTA_SCALE / 2)
+            zoom_camera(DELTA_SCALE / 2)
 
-func zoomCamera(delta):
+func zoom_camera(delta):
     zoom_scale += delta
     camera.zoom.x = zoom_scale
     camera.zoom.y = zoom_scale

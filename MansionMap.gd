@@ -50,21 +50,17 @@ var cats_saved: int = 0
 var gen_timer
 var gen_pos: Vector2
 
-var playerScene = preload("res://Player.tscn")
+var PlayerScene = preload("res://Player.tscn")
 var player
 
-var demonScene = preload("res://Demon.tscn")
+var DemonScene = preload("res://Demon.tscn")
 var demons = []
 
-var catScene = preload("res://CatSprite.tscn")
+var CatScene = preload("res://CatSprite.tscn")
 
 # it's probably better to have one player play multiple sounds, but this is easy
 onready var up_sound = $SoundPlayer
 onready var down_sound = $DownPlayer
-
-# var pickupSound = preload("res://Rise02.ogg")
-
-var holding_cat : bool = false
 
 func get_empty_cell():
     while true:
@@ -83,14 +79,14 @@ func place_demons(count):
         var cell = get_empty_cell()
         # TODO:  Check for two demons in the same location
         # Even it if happens, it doesn't matter since they will move
-        var demon = demonScene.instance()
+        var demon = DemonScene.instance()
         demon.position = map_to_world(cell)
         demon.try_target = demon.position
         demons.append(demon)
         add_child(demon)
 
 func place_all_items():
-    player = playerScene.instance()
+    player = PlayerScene.instance()
     player.position = map_to_world(Vector2(21, 21))
     player.target = player.position
     player.try_target = player.position
@@ -144,31 +140,22 @@ func do_generate():
 
 func pick_up_cat(target_cell):
     up_sound.play()
-    holding_cat = true
-    var cat = catScene.instance()
-    cat.position.y = -8
-    player.add_child(cat)
+    player.pick_up_cat()
     set_cellv(target_cell, -1)
 
 func drop_cat(target_cell, cost):
     down_sound.play()
     global.score -= cost
     set_cellv(target_cell, -1)
-    if holding_cat:
-        var cat = player.get_child(player.get_child_count()-1)
-        player.remove_child(cat)
-        cat.queue_free()
-        holding_cat = false
+    if player.holding_cat:
+        player.drop_cat()
         global.score -= cost
         place_items(TILE.CAT, 1)
 
 func save_cat():
     up_sound.play()
     global.score += SCORE_PER_CAT
-    holding_cat = false
-    var cat = player.get_child(player.get_child_count()-1)
-    player.remove_child(cat)
-    cat.queue_free()
+    player.drop_cat()
     emit_signal("cat_saved")
 
 # Overrides
@@ -218,14 +205,14 @@ func move_player():
     var target_cell = world_to_map(player.try_target)
     match get_cellv(target_cell):
         -1:
-            if holding_cat and target_cell.y == BOTTOM_ROW:
+            if player.holding_cat and target_cell.y == BOTTOM_ROW:
                 save_cat()
 
         TILE.TERRAIN:
             player.try_target = player.target
 
         TILE.CAT:
-            if holding_cat:
+            if player.holding_cat:
                 player.try_target = player.target
             else:
                 pick_up_cat(target_cell)

@@ -10,5 +10,5 @@ script = ExtResource( 1 )
 position = Vector2( 0.019928, -0.0772171 )
 texture = ExtResource( 2 )
 offset = Vector2( 8, 8 )
-hframes = 5
+hframes = 6
 frame = 4
