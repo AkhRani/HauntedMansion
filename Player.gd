@@ -46,7 +46,11 @@ func _process(delta):
     if position == target and dir != Vector2():
         start = position
         try_target = position + dir * GRID_SIZE
-        dt = 0
+        # If we don't adjust position here, we stop moving for a frame or two
+        # when we hit the target position.  Doing it this way we will instead
+        # get a "bump" frame
+        dt = delta * speed
+        position = start.linear_interpolate(try_target, dt)
     elif position != target:
         dt += delta * speed
         if dt > 1:

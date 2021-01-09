@@ -48,6 +48,7 @@ var rng = RandomNumberGenerator.new()
 var state : int = STATE.GENERATE
 var cats_saved: int = 0
 var gen_timer
+var score_timer
 var gen_pos: Vector2
 
 var PlayerScene = preload("res://Player.tscn")
@@ -137,6 +138,11 @@ func do_generate():
     remove_child(gen_timer)
     place_all_items()
     state = STATE.PLAY
+    # Start timer to decrement score every N seconds
+    score_timer = Timer.new()
+    score_timer.connect("timeout", self, "do_decrement_score")
+    add_child(score_timer)
+    score_timer.start(5.0)
 
 func pick_up_cat(target_cell):
     up_sound.play()
@@ -157,6 +163,9 @@ func save_cat():
     global.score += SCORE_PER_CAT
     player.drop_cat()
     emit_signal("cat_saved")
+
+func do_decrement_score():
+    global.score -= 1
 
 # Overrides
 
