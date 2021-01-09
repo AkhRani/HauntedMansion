@@ -4,8 +4,8 @@ extends Node2D
 func _ready():
     if global.difficulty < 6:
         global.difficulty += 1
-    $HBoxContainer/Difficulty.text = "%d" % global.difficulty
-    $HBoxContainer/Score.text = "%d" % global.score
+    $VBoxContainer/HBoxContainer2/Difficulty.text = "%d" % global.difficulty
+    $VBoxContainer/HBoxContainer/Score.text = "%d" % global.score
 
 func _on_Button_pressed():
     get_tree().change_scene("res://Mansion.tscn")
