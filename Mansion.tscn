@@ -9,21 +9,21 @@
 
 [node name="Mansion" type="Node2D"]
 script = ExtResource( 1 )
-__meta__ = {
-"_edit_horizontal_guides_": [ 480.0 ],
-"_edit_vertical_guides_": [ 640.0 ]
-}
 
 [node name="ViewportContainer" type="ViewportContainer" parent="."]
-margin_right = 656.0
-margin_bottom = 480.0
+margin_right = 1024.0
+margin_bottom = 539.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="MansionView" type="Viewport" parent="ViewportContainer"]
-size = Vector2( 640, 480 )
+size = Vector2( 1024, 540 )
 handle_input_locally = false
 render_target_update_mode = 3
 
 [node name="MansionMap" type="TileMap" parent="ViewportContainer/MansionView"]
+scale = Vector2( 1.5, 1.5 )
 tile_set = ExtResource( 2 )
 cell_size = Vector2( 16, 16 )
 format = 1
@@ -43,12 +43,16 @@ autoplay = true
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 anchor_bottom = 1.0
-margin_top = 384.0
-margin_right = 640.0
-margin_bottom = 424.0
+margin_left = 2.18921
+margin_top = 558.246
+margin_right = 642.189
+margin_bottom = 598.246
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
-margin_right = 640.0
+margin_right = 639.0
 margin_bottom = 40.0
 
 [node name="Label" type="Label" parent="MarginContainer/HBoxContainer"]

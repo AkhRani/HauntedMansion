@@ -3,7 +3,7 @@
 [ext_resource path="res://Graphics/GismondaPlain001001-8eYJ_.ttf" type="DynamicFontData" id=1]
 
 [resource]
-size = 40
+size = 64
 use_filter = true
-extra_spacing_top = 30
+extra_spacing_top = 40
 font_data = ExtResource( 1 )

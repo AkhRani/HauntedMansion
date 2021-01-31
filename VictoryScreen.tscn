@@ -6,110 +6,94 @@
 
 [node name="VictoryScreen" type="Node2D"]
 script = ExtResource( 1 )
-__meta__ = {
-"_edit_horizontal_guides_": [ 480.0 ],
-"_edit_vertical_guides_": [ 640.0 ]
-}
 
 [node name="Victory" type="Label" parent="."]
 margin_top = 64.0
-margin_right = 640.0
+margin_right = 1024.0
 margin_bottom = 128.0
+size_flags_horizontal = 0
 custom_fonts/font = ExtResource( 2 )
 text = "All the cats are safe!"
 align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="ScrollContainer" type="ScrollContainer" parent="."]
-margin_top = 144.0
-margin_right = 640.0
-margin_bottom = 320.0
+margin_top = 160.0
+margin_right = 1024.0
+margin_bottom = 400.0
 scroll_horizontal_enabled = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Credits" type="Label" parent="ScrollContainer"]
-margin_right = 591.0
-margin_bottom = 1115.0
-custom_fonts/font = ExtResource( 2 )
-text = "Credits:
-
-Music:  Sacred Battle by Tausdei
-opengameart.org/
-  content/sacred-battle
-License: CC-BY-4.0 CC-BY.3.0
-
-Sounds:  Wobbleboxx
-opengameart.org/content/
-  level-up-power-up-coin
-  -get-13-sounds
-License:  CC0
-
-Font: Gismonda from vectorian.net
-www.fontspace.com/
-   gismonda-font-f6128
-License: Shareware
-
-Original Game Design:
-Haunted Mansion
-By Calvin Overhulser
-Compute's Gazette
-February 1984
-archive.org/details/
-  1984-02-computegazette/
-  page/n63"
+margin_bottom = 28.0
+custom_fonts/font = ExtResource( 3 )
 
 [node name="Button" type="Button" parent="."]
-margin_left = 288.0
-margin_top = 384.0
-margin_right = 369.0
-margin_bottom = 428.0
+margin_left = 448.0
+margin_top = 544.0
+margin_right = 583.0
+margin_bottom = 588.0
 custom_fonts/font = ExtResource( 3 )
 text = "Continue"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
-margin_left = 275.689
-margin_top = 336.37
-margin_right = 382.689
-margin_bottom = 376.37
+margin_left = 384.0
+margin_top = 464.0
+margin_right = 650.0
+margin_bottom = 524.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
-margin_right = 107.0
-margin_bottom = 14.0
+margin_right = 266.0
+margin_bottom = 28.0
 
 [node name="ScoreLabel" type="Label" parent="VBoxContainer/HBoxContainer"]
-margin_right = 100.0
-margin_bottom = 14.0
+margin_right = 196.0
+margin_bottom = 28.0
 custom_fonts/font = ExtResource( 3 )
-text = "Current Score:"
+text = "Current Score"
 valign = 1
 
 [node name="Score" type="Label" parent="VBoxContainer/HBoxContainer"]
-margin_left = 104.0
-margin_right = 107.0
-margin_bottom = 14.0
+margin_left = 200.0
+margin_right = 266.0
+margin_bottom = 28.0
+rect_min_size = Vector2( 66, 0 )
+size_flags_horizontal = 3
 custom_fonts/font = ExtResource( 3 )
-text = "1"
+text = "000"
+align = 2
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer"]
-margin_top = 18.0
-margin_right = 107.0
-margin_bottom = 32.0
+margin_top = 32.0
+margin_right = 266.0
+margin_bottom = 60.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="DifficultyLabel" type="Label" parent="VBoxContainer/HBoxContainer2"]
-margin_right = 62.0
-margin_bottom = 14.0
+margin_right = 125.0
+margin_bottom = 28.0
 custom_fonts/font = ExtResource( 3 )
 text = "Difficulty"
 valign = 1
 
 [node name="Difficulty" type="Label" parent="VBoxContainer/HBoxContainer2"]
-margin_left = 66.0
-margin_right = 69.0
-margin_bottom = 14.0
+margin_left = 129.0
+margin_right = 266.0
+margin_bottom = 28.0
+size_flags_horizontal = 3
 custom_fonts/font = ExtResource( 3 )
 text = "1"
+align = 2
 [connection signal="pressed" from="Button" to="." method="_on_Button_pressed"]

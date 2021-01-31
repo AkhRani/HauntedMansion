@@ -6,7 +6,7 @@ const GRID_SIZE = 16
 const MAX_SCALE = .5
 const MIN_SCALE = .25
 const DELTA_SCALE = .001
-const SCREEN_CENTER = Vector2(640,480)/2
+const SCREEN_CENTER = Vector2(1024,600)/2
 const ZOOM_DELAY = .3
 
 # Settings
@@ -28,6 +28,7 @@ onready var camera = $Camera2D
 # Called when the node enters the scene tree for the first time.
 func _ready():
     target = position
+    camera.smoothing_enabled = false
     camera.position = to_local(SCREEN_CENTER)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
