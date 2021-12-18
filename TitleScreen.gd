@@ -9,8 +9,6 @@ func _ready():
     $Title.text = "to the Haunted Mansion"
     anim.play("Fade Red")
 
-    pass # Replace with function body.
-
 func _on_Button_pressed():
     $Title.text = "Save the cats!"
     var anim = $AnimationPlayer
