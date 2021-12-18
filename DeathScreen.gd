@@ -3,6 +3,8 @@ extends Node2D
 # Called when the node enters the scene tree for the first time.
 func _ready():
     $VBoxContainer/HBoxContainer/Score.text = "%d" % global.score
+    $VBoxContainer/HBoxContainer2/Difficulty.text = "%d" % global.difficulty
+    $VBoxContainer/HBoxContainer2/HSlider.value = global.difficulty
 
 func _on_Button_pressed():
     global.score = 0
