@@ -1,6 +1,5 @@
 extends Node2D
 
-
 # Constants
 const GRID_SIZE = 16
 const MAX_SCALE = .5
