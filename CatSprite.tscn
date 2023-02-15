@@ -1,8 +1,8 @@
 [gd_scene load_steps=2 format=2]
 
-[ext_resource path="res://Graphics/MansionSprites.png" type="Texture" id=1]
+[ext_resource path="res://Graphics/MansionSprites.png" type="Texture2D" id=1]
 
-[node name="CatSprite" type="Sprite"]
+[node name="CatSprite" type="Sprite2D"]
 texture = ExtResource( 1 )
 offset = Vector2( 8, 8 )
 hframes = 6
